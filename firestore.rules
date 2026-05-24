@@ -1,0 +1,11 @@
+// Firestore セキュリティルール
+// Firebase Console > Firestore Database > ルール に貼り付けてください
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 各ユーザーは自分のセッションデータのみ読み書き可能
+    match /sessions/{userId}/{document=**} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+  }
+}

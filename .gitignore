@@ -1,0 +1,21 @@
+# Firebase 設定（APIキーを含むため Git 管理外）
+firebase-config.js
+
+# Claude Code 設定
+.claude/
+
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Node（将来的にビルドツールを使う場合）
+node_modules/
