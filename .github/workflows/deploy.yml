@@ -1,0 +1,58 @@
+name: GitHub Pages へデプロイ
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:  # 手動実行も可能
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: リポジトリをチェックアウト
+        uses: actions/checkout@v4
+
+      - name: firebase-config.js をシークレットから生成
+        env:
+          FIREBASE_API_KEY:            ${{ secrets.FIREBASE_API_KEY }}
+          FIREBASE_AUTH_DOMAIN:        ${{ secrets.FIREBASE_AUTH_DOMAIN }}
+          FIREBASE_PROJECT_ID:         ${{ secrets.FIREBASE_PROJECT_ID }}
+          FIREBASE_STORAGE_BUCKET:     ${{ secrets.FIREBASE_STORAGE_BUCKET }}
+          FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}
+          FIREBASE_APP_ID:             ${{ secrets.FIREBASE_APP_ID }}
+          FIREBASE_MEASUREMENT_ID:     ${{ secrets.FIREBASE_MEASUREMENT_ID }}
+        run: |
+          printf 'window.FIREBASE_CONFIG = {\n'                          > firebase-config.js
+          printf '  apiKey:            "%s",\n' "$FIREBASE_API_KEY"     >> firebase-config.js
+          printf '  authDomain:        "%s",\n' "$FIREBASE_AUTH_DOMAIN" >> firebase-config.js
+          printf '  projectId:         "%s",\n' "$FIREBASE_PROJECT_ID"  >> firebase-config.js
+          printf '  storageBucket:     "%s",\n' "$FIREBASE_STORAGE_BUCKET" >> firebase-config.js
+          printf '  messagingSenderId: "%s",\n' "$FIREBASE_MESSAGING_SENDER_ID" >> firebase-config.js
+          printf '  appId:             "%s",\n' "$FIREBASE_APP_ID"      >> firebase-config.js
+          printf '  measurementId:     "%s"\n'  "$FIREBASE_MEASUREMENT_ID" >> firebase-config.js
+          printf '};\n'                                                  >> firebase-config.js
+
+      - name: GitHub Pages の設定
+        uses: actions/configure-pages@v4
+
+      - name: ファイルをアップロード
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+      - name: GitHub Pages へデプロイ
+        id: deployment
+        uses: actions/deploy-pages@v4
