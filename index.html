@@ -10,15 +10,17 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     :root {
-      --primary:  #5B8DEF;
-      --accent:   #FF8FAB;
-      --bg:       #F8F9FC;
+      --primary:  #4F6EF7;
+      --accent:   #FF6B6B;
+      --accent2:  #FF8FAB;
+      --yellow:   #FFD166;
+      --bg:       #F5F0E8;
       --surface:  #FFFFFF;
-      --text:     #1A1A2E;
-      --sub:      #6B7280;
-      --border:   #E5E7EB;
-      --shadow:   0 2px 12px rgba(26,26,46,0.08);
-      --shadow-lg:0 6px 24px rgba(26,26,46,0.12);
+      --text:     #1A1D2E;
+      --sub:      #8B92A9;
+      --border:   #E8E0D0;
+      --shadow:   0 2px 12px rgba(26,29,46,0.07);
+      --shadow-lg:0 6px 24px rgba(26,29,46,0.11);
       --tab-h:    64px;
       --hdr-h:    58px;
     }
@@ -44,15 +46,15 @@
     .logo { display: flex; align-items: center; gap: 10px; }
     .logo-badge {
       width: 36px; height: 36px; border-radius: 10px;
-      background: linear-gradient(135deg, #5B8DEF 0%, #FF8FAB 100%);
+      background: linear-gradient(135deg, #4F6EF7 0%, #FF8FAB 100%);
       display: flex; align-items: center; justify-content: center;
       color: white; font-size: 16px; flex-shrink: 0;
-      box-shadow: 0 3px 10px rgba(91,141,239,0.4);
+      box-shadow: 0 3px 10px rgba(79,110,247,0.4);
     }
     .logo-text { display: flex; flex-direction: column; line-height: 1.2; }
     .logo-name {
       font-size: 16px; font-weight: 700;
-      background: linear-gradient(90deg, #5B8DEF 20%, #FF8FAB 100%);
+      background: linear-gradient(90deg, #4F6EF7 20%, #FF8FAB 100%);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
     }
     .logo-sub  { font-size: 10px; color: var(--sub); }
@@ -71,20 +73,27 @@
       max-width: 480px; margin: 0 auto;
       height: calc(var(--tab-h) + env(safe-area-inset-bottom, 0px));
       padding-bottom: env(safe-area-inset-bottom, 0px);
-      background: var(--surface); border-top: 1px solid var(--border);
+      background: #FDFAF5; border-top: 1px solid #E8E0D0;
       display: flex; z-index: 100;
-      box-shadow: 0 -1px 0 var(--border);
+      box-shadow: 0 -1px 0 #E8E0D0;
     }
     .tab-item {
       flex: 1; display: flex; flex-direction: column;
       align-items: center; justify-content: center; gap: 4px;
-      cursor: pointer; color: var(--sub); font-size: 10px;
+      cursor: pointer; color: var(--sub); font-size: 11px;
       font-family: 'Noto Sans JP', sans-serif;
       border: none; background: none; transition: color 0.2s;
       position: relative;
     }
     .tab-item i { font-size: 20px; }
-    .tab-item.active { color: var(--primary); }
+    .tab-item.active { color: #FF8C42; }
+    @keyframes tabBounce {
+      0%   { transform: translateY(0) scale(1); }
+      30%  { transform: translateY(-6px) scale(1.15); }
+      65%  { transform: translateY(2px) scale(0.93); }
+      100% { transform: translateY(0) scale(1); }
+    }
+    .tab-item.tab-bounce i { animation: tabBounce 0.32s cubic-bezier(0.34,1.56,0.64,1) forwards; }
     .tab-badge {
       position: absolute; top: 8px; right: calc(50% - 18px);
       background: var(--accent); color: white; font-size: 9px; font-weight: 700;
@@ -100,76 +109,130 @@
       to   { opacity: 1; transform: translateY(0); }
     }
     .section-title {
-      font-size: 11px; font-weight: 700; color: var(--sub);
+      font-size: 12px; font-weight: 700; color: var(--sub);
       text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px;
     }
 
     /* ── Summary card ── */
     .summary-card {
-      background: var(--primary); border-radius: 20px;
+      background: #FF8C42; border-radius: 22px;
       padding: 22px; color: white; margin-bottom: 14px;
-      box-shadow: 0 8px 24px rgba(91,141,239,0.35);
+      box-shadow: 0 6px 24px rgba(255,140,66,0.35);
     }
     .summary-card.archived { background: #64748B; box-shadow: 0 8px 24px rgba(100,116,139,0.3); }
-    .summary-label { font-size: 13px; opacity: 0.85; margin-bottom: 4px; }
+    .summary-label { font-size: 14px; opacity: 0.85; margin-bottom: 4px; }
     .summary-total {
-      font-size: 38px; font-weight: 700; font-variant-numeric: tabular-nums;
+      font-size: 36px; font-weight: 700; font-variant-numeric: tabular-nums;
       margin-bottom: 14px; letter-spacing: -0.02em;
     }
     .summary-payers { display: flex; gap: 10px; }
-    .payer-chip { flex: 1; background: rgba(255,255,255,0.18); border-radius: 12px; padding: 10px 12px; }
-    .payer-chip-label  { font-size: 12px; opacity: 0.85; margin-bottom: 2px; }
-    .payer-chip-amount { font-size: 20px; font-weight: 700; font-variant-numeric: tabular-nums; }
+    .payer-chip { flex: 1; background: rgba(255,255,255,0.2); border-radius: 10px; padding: 10px 12px; }
+    .payer-chip-label  { font-size: 13px; opacity: 0.85; margin-bottom: 2px; }
+    .payer-chip-amount { font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums; }
 
     /* ── Settle card ── */
     .settle-card {
-      background: var(--surface); border: 1.5px solid #FFBECF;
-      border-radius: 16px; padding: 16px; margin-bottom: 14px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 16px; margin-bottom: 14px;
       box-shadow: var(--shadow);
     }
     .settle-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
     .settle-header-icon {
-      width: 30px; height: 30px; border-radius: 8px; background: #FFF0F4;
+      width: 30px; height: 30px; border-radius: 8px; background: #FFF3F0;
       display: flex; align-items: center; justify-content: center; color: var(--accent); font-size: 13px;
     }
     .settle-header-title { font-size: 14px; font-weight: 700; }
     .settle-amounts { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
-    .settle-person { flex: 1; background: var(--bg); border-radius: 10px; padding: 10px; text-align: center; }
-    .settle-person-label  { font-size: 11px; color: var(--sub); margin-bottom: 2px; }
-    .settle-person-amount { font-size: 16px; font-weight: 700; font-variant-numeric: tabular-nums; }
+    .settle-person { flex: 1; background: var(--bg); border-radius: 8px; padding: 10px; text-align: center; }
+    .settle-person-label  { font-size: 12px; color: var(--sub); margin-bottom: 2px; }
+    .settle-person-amount { font-size: 17px; font-weight: 700; font-variant-numeric: tabular-nums; }
     .settle-arrow { color: var(--sub); font-size: 16px; flex-shrink: 0; }
     .settle-message {
-      font-size: 15px; font-weight: 700; text-align: center;
-      padding: 12px; background: #FFF0F4; border-radius: 10px; margin-bottom: 12px; line-height: 1.5;
+      font-size: 14px; font-weight: 700; text-align: center;
+      padding: 12px; background: #FFF3F0; border-radius: 8px; margin-bottom: 12px; line-height: 1.5;
     }
     .settle-message.even  { background: #F0FFF4; color: #276749; }
-    .settle-message.empty { background: var(--bg); color: var(--sub); font-weight: 400; font-size: 13px; }
+    .settle-message.empty { background: var(--bg); color: var(--sub); font-weight: 400; font-size: 14px; }
     .btn-settle {
-      width: 100%; padding: 14px; background: var(--accent); color: white; border: none;
-      border-radius: 12px; font-family: 'Noto Sans JP', sans-serif; font-size: 14px; font-weight: 700;
-      cursor: pointer;
+      width: 100%; padding: 14px; background: #FF8C42; color: white; border: none;
+      border-radius: 14px; font-family: 'Noto Sans JP', sans-serif; font-size: 14px; font-weight: 700;
+      cursor: pointer; box-shadow: 0 4px 14px rgba(255,140,66,0.4);
     }
-    .btn-settle:disabled { background: #E5E7EB; color: var(--sub); cursor: default; }
-    @keyframes settleFlash {
-      0%   { transform: scale(1);    background: var(--accent); }
-      15%  { transform: scale(1.07); background: #FF4D80; }
-      35%  { transform: scale(1.03); background: #FF8FAB; }
-      65%  { transform: scale(1.01); background: #5CC87C; }
-      100% { transform: scale(1);    background: #7BC47F; }
+    .btn-settle:disabled { background: #ECEEF5; color: var(--sub); cursor: default; }
+
+    /* ── Settle card mini characters ── */
+    .settle-chars-row {
+      display: flex; justify-content: center; align-items: flex-end;
+      gap: 24px; padding: 14px 0 2px;
     }
-    .btn-settle.flash { animation: settleFlash 0.8s ease forwards; }
+    .sc-char { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+    .sc-char-name { font-size: 10px; font-weight: 700; color: var(--sub); }
+    .sc-char svg  { width: 30px; height: 44px; display: block; }
+
+    /* Arm / mouth animation helpers */
+    .arm-l, .arm-r {
+      transform-box: fill-box;
+      transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .arm-l { transform-origin: 100% 50%; }
+    .arm-r { transform-origin: 0%   50%; }
+    .mouth-g { display: none; }
+    .celebrate .arm-l { transform: rotate(-120deg); }
+    .celebrate .arm-r { transform: rotate(120deg); }
+    .celebrate .mouth-n { display: none; }
+    .celebrate .mouth-g { display: unset; }
+
+    /* ── Celebration overlay ── */
+    .cel-overlay {
+      position: fixed; inset: 0; z-index: 9999;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      background: rgba(255,253,247,0.97);
+      animation: celIn 0.3s ease-out;
+    }
+    @keyframes celIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+    .cel-canvas { position: absolute; inset: 0; pointer-events: none; width: 100%; height: 100%; }
+    .cel-body {
+      position: relative; z-index: 1;
+      display: flex; flex-direction: column; align-items: center; gap: 16px;
+      padding: 0 24px; text-align: center;
+    }
+    .cel-chars { display: flex; gap: 44px; align-items: flex-end; }
+    .cel-char  { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    .cel-char-name { font-size: 13px; font-weight: 700; color: var(--sub); }
+    .cel-char svg  { width: 76px; height: 108px; }
+    @keyframes celBounce {
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(-9px); }
+    }
+    .cel-char:nth-child(1) svg { animation: celBounce 0.9s ease-in-out infinite; }
+    .cel-char:nth-child(2) svg { animation: celBounce 0.9s 0.18s ease-in-out infinite; }
+    .cel-amount {
+      font-size: 54px; font-weight: 700; font-variant-numeric: tabular-nums;
+      color: var(--text); letter-spacing: -0.03em;
+      transition: color 0.4s, transform 0.5s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .cel-amount.cel-zero { color: #5CC87C; transform: scale(1.18); }
+    .cel-msg {
+      font-size: 16px; font-weight: 700; color: var(--text); line-height: 1.7;
+      opacity: 0; transform: translateY(10px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .cel-msg.cel-show { opacity: 1; transform: translateY(0); }
 
     /* ── Settle result (archive read-only) ── */
-    .settle-result { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 14px; box-shadow: var(--shadow); }
-    .settle-result-label { font-size: 11px; font-weight: 700; color: var(--sub); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
-    .settle-result-msg       { font-size: 15px; font-weight: 700; }
+    .settle-result { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 14px; margin-bottom: 14px; box-shadow: var(--shadow); }
+    .settle-result-label { font-size: 12px; font-weight: 700; color: var(--sub); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+    .settle-result-msg       { font-size: 16px; font-weight: 700; }
     .settle-result-msg.even  { color: #276749; }
-    .settle-result-msg.empty { color: var(--sub); font-weight: 400; font-size: 13px; }
+    .settle-result-msg.empty { color: var(--sub); font-weight: 400; font-size: 14px; }
 
     /* ── Chart card ── */
-    .chart-card { background: var(--surface); border-radius: 16px; border: 1px solid var(--border); padding: 14px; margin-bottom: 14px; overflow: hidden; box-shadow: var(--shadow); }
+    .chart-card { background: var(--surface); border-radius: 14px; border: 1px solid var(--border); padding: 14px; margin-bottom: 14px; overflow: hidden; box-shadow: var(--shadow); }
     .chart-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
-    .chart-title  { font-size: 13px; font-weight: 700; }
+    .chart-title  { font-size: 14px; font-weight: 700; }
     .chart-tabs   { display: flex; gap: 3px; background: var(--bg); border-radius: 8px; padding: 3px; }
     .chart-tab {
       display: flex; align-items: center; gap: 5px; padding: 5px 11px;
@@ -181,50 +244,56 @@
     /* ── Swipe-to-delete wrapper ── */
     .swipe-wrap {
       position: relative; overflow: hidden;
-      border-radius: 12px; margin-bottom: 10px;
+      border-radius: 18px; margin-bottom: 10px;
     }
     .swipe-del-bg {
       position: absolute; right: 0; top: 0; bottom: 0; width: 78px;
-      background: #EF4444; border-radius: 0 12px 12px 0;
+      background: #EF4444; border-radius: 0 18px 18px 0;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       color: white; gap: 3px; cursor: pointer;
     }
     .swipe-del-bg i    { font-size: 18px; }
     .swipe-del-bg span { font-size: 11px; font-weight: 700; }
     .swipe-slide {
-      position: relative; z-index: 1; border-radius: 12px;
+      position: relative; z-index: 1; border-radius: 18px;
       transition: transform 0.28s cubic-bezier(0.25, 0.46, 0.45, 0.94);
       will-change: transform;
     }
 
     /* ── Expense card ── */
     .expense-card {
-      background: var(--surface); border-radius: 12px; border: 1px solid var(--border);
+      background: var(--surface); border-radius: 18px;
+      border: 1px solid var(--border); border-left-width: 4px;
       overflow: hidden; display: flex;
-      box-shadow: var(--shadow);
+      box-shadow: 0 1px 6px rgba(26,29,46,0.06);
       animation: cardIn 0.3s ease-out;
     }
-    .swipe-wrap .expense-card { border-radius: 12px; }
+    .swipe-wrap .expense-card { border-radius: 18px; }
     .standalone-card { margin-bottom: 10px; }
     @keyframes cardIn {
       from { opacity: 0; transform: translateY(16px); }
       to   { opacity: 1; transform: translateY(0); }
     }
-    .card-bar  { width: 5px; flex-shrink: 0; }
-    .card-body { flex: 1; padding: 11px 12px; min-width: 0; }
-    .card-top  { display: flex; align-items: center; gap: 7px; margin-bottom: 5px; }
+    .card-date-badge {
+      width: 52px; flex-shrink: 0;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 10px 4px; gap: 0;
+    }
+    .card-date-month { font-size: 10px; font-weight: 700; opacity: 0.75; }
+    .card-date-day   { font-size: 24px; font-weight: 700; line-height: 1.1; }
+    .card-body { flex: 1; padding: 10px 12px; min-width: 0; }
+    .card-top  { display: flex; align-items: center; gap: 7px; margin-bottom: 4px; }
     .card-icon {
       width: 26px; height: 26px; border-radius: 6px;
       display: flex; align-items: center; justify-content: center;
       font-size: 12px; color: white; flex-shrink: 0;
     }
-    .card-cat-name { font-size: 13px; font-weight: 700; }
-    .card-date { margin-left: auto; font-size: 12px; color: var(--sub); flex-shrink: 0; }
-    .card-memo { font-size: 13px; color: var(--sub); margin-bottom: 7px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .card-cat-name { font-size: 14px; font-weight: 700; }
+    .card-memo { font-size: 13px; color: var(--sub); margin-bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .card-bottom { display: flex; align-items: center; justify-content: flex-end; gap: 7px; }
-    .card-badge  { font-size: 11px; padding: 2px 8px; border-radius: 99px; background: var(--bg); color: var(--sub); border: 1px solid var(--border); }
+    .card-badge  { font-size: 12px; padding: 2px 8px; border-radius: 99px; background: var(--bg); color: var(--sub); border: 1px solid var(--border); }
     .card-badge.recurring { background: #EDE9FE; color: #7C3AED; border-color: #DDD6FE; }
-    .card-amount { font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums; }
+    .card-amount { font-size: 20px; font-weight: 700; font-variant-numeric: tabular-nums; }
     .card-del {
       padding: 8px 12px; background: none; border: none; color: #D1D5DB;
       cursor: pointer; font-size: 14px; align-self: center; flex-shrink: 0;
@@ -233,16 +302,18 @@
     @media (hover: hover) { .swipe-slide:hover .card-del { opacity: 1; } }
     .card-del:hover { color: #EF4444; }
 
-    /* ── Settlement record ── */
-    .settle-record {
-      background: #FFF8FA; border: 1px dashed #FFBECF; border-radius: 10px;
-      padding: 12px; display: flex; align-items: flex-start; gap: 10px; animation: cardIn 0.3s ease-out;
+    /* ── Settlement log row ── */
+    .settle-log {
+      display: flex; align-items: center; gap: 8px;
+      padding: 6px 12px; background: var(--bg);
+      border-left: 2px dotted var(--border);
+      margin-bottom: 3px;
     }
-    .settle-record-tappable { cursor: pointer; transition: background 0.15s, transform 0.1s; }
-    .settle-record-tappable:active { background: #FFEEF4; transform: scale(0.99); }
-    .settle-record-icon { width: 28px; height: 28px; border-radius: 7px; background: #FFE4EE; display: flex; align-items: center; justify-content: center; color: var(--accent); font-size: 13px; flex-shrink: 0; }
-    .settle-record-date { font-size: 11px; color: var(--sub); margin-bottom: 2px; }
-    .settle-record-memo { font-size: 13px; font-weight: 700; }
+    .settle-log-tappable { cursor: pointer; transition: background 0.15s; }
+    .settle-log-tappable:hover { background: var(--surface); }
+    .settle-log-check { font-size: 10px; color: var(--sub); flex-shrink: 0; opacity: 0.7; }
+    .settle-log-label { font-size: 12px; color: var(--sub); flex: 1; min-width: 0; }
+    .settle-log-date  { font-size: 11px; color: var(--sub); flex-shrink: 0; opacity: 0.6; }
 
     /* ── Empty state ── */
     .empty { text-align: center; padding: 52px 20px; color: var(--sub); }
@@ -250,14 +321,14 @@
     .empty p { font-size: 14px; line-height: 1.7; }
 
     /* ── Add form ── */
-    .form-card { background: var(--surface); border-radius: 18px; padding: 20px; border: 1px solid var(--border); box-shadow: var(--shadow); }
+    .form-card { background: var(--surface); border-radius: 14px; padding: 20px; border: 1px solid var(--border); box-shadow: var(--shadow); }
     .form-group { margin-bottom: 18px; }
     .form-label { display: block; font-size: 12px; font-weight: 700; color: var(--sub); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
     .form-label-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
     .form-label-row .form-label { margin-bottom: 0; }
     .form-input {
-      width: 100%; padding: 13px 14px; border: 1.5px solid var(--border); border-radius: 12px;
-      font-family: 'Noto Sans JP', sans-serif; font-size: 15px; color: var(--text);
+      width: 100%; padding: 13px 14px; border: 1px solid var(--border); border-radius: 10px;
+      font-family: 'Noto Sans JP', sans-serif; font-size: 14px; color: var(--text);
       background: var(--bg); transition: border-color 0.2s, background 0.2s; outline: none; -webkit-appearance: none;
     }
     .form-input:focus { border-color: var(--primary); background: white; }
@@ -279,17 +350,18 @@
     .cat-btn {
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       padding: 10px 4px; gap: 4px;
-      border: 2px solid var(--border); border-radius: 12px;
+      border: 1px solid var(--border); border-radius: 10px;
       background: var(--bg); cursor: pointer; transition: all 0.15s;
       font-family: 'Noto Sans JP', sans-serif;
       position: relative; overflow: hidden;
     }
     .cat-btn:active { transform: scale(0.96); }
-    .cat-btn-icon { font-size: 20px; line-height: 1; }
-    .cat-btn-name { font-size: 10px; font-weight: 700; color: var(--sub); transition: color 0.15s; }
+    .cat-btn-icon { font-size: 22px; line-height: 1; }
+    .cat-btn-name { font-size: 11px; font-weight: 700; color: var(--sub); transition: color 0.15s; }
     .cat-btn.active {
       border-color: var(--cat-c);
       background: color-mix(in srgb, var(--cat-c) 10%, white);
+      transform: scale(1.05);
     }
     .cat-btn.active .cat-btn-name { color: var(--cat-c); }
 
@@ -306,25 +378,25 @@
       background: var(--bg); font-size: 16px; cursor: pointer; display: flex;
       align-items: center; justify-content: center; transition: all 0.15s; padding: 0;
     }
-    .emoji-btn.active { border-color: var(--primary); background: #EEF3FD; }
+    .emoji-btn.active { border-color: var(--primary); background: #EEF2FF; }
     .emoji-btn:active { transform: scale(0.9); }
 
     /* ── Payer toggle ── */
     .payer-toggle { display: flex; gap: 8px; }
     .payer-btn {
-      flex: 1; padding: 13px; border: 1.5px solid var(--border); border-radius: 12px;
-      font-family: 'Noto Sans JP', sans-serif; font-size: 15px; font-weight: 700;
+      flex: 1; padding: 13px; border: 1px solid var(--border); border-radius: 10px;
+      font-family: 'Noto Sans JP', sans-serif; font-size: 14px; font-weight: 700;
       cursor: pointer; background: var(--bg); color: var(--sub); transition: all 0.15s;
     }
     .payer-btn:active { transform: scale(0.97); }
-    .payer-btn.active { border-color: var(--primary); background: #EEF3FD; color: var(--primary); }
+    .payer-btn.active { border-color: var(--primary); background: #EEF2FF; color: var(--primary); }
 
     /* ── Submit button ── */
     .btn-submit {
       width: 100%; padding: 16px; background: var(--primary); color: white; border: none;
-      border-radius: 14px; font-family: 'Noto Sans JP', sans-serif; font-size: 16px; font-weight: 700;
+      border-radius: 14px; font-family: 'Noto Sans JP', sans-serif; font-size: 14px; font-weight: 700;
       cursor: pointer; transition: background 0.2s, transform 0.1s; margin-top: 4px;
-      box-shadow: 0 4px 14px rgba(91,141,239,0.4);
+      box-shadow: 0 4px 14px rgba(79,110,247,0.35);
     }
     .btn-submit:active  { transform: scale(0.97); }
     .btn-submit.success { background: #7BC47F; box-shadow: 0 4px 14px rgba(123,196,127,0.4); animation: btnBounce 0.35s ease; }
@@ -356,7 +428,7 @@
       color: white; font-size: 17px; flex-shrink: 0;
     }
     .archive-month-left  { flex: 1; min-width: 0; }
-    .archive-month-title { font-size: 15px; font-weight: 700; margin-bottom: 3px; }
+    .archive-month-title { font-size: 14px; font-weight: 700; margin-bottom: 3px; }
     .archive-month-sub   { font-size: 12px; color: var(--sub); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .archive-month-right { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
     .archive-month-total { font-size: 17px; font-weight: 700; font-variant-numeric: tabular-nums; }
@@ -424,7 +496,7 @@
     .btn-modal-add {
       padding: 13px 16px; background: var(--primary); color: white; border: none;
       border-radius: 12px; font-family: 'Noto Sans JP', sans-serif; font-size: 14px; font-weight: 700;
-      cursor: pointer; white-space: nowrap; box-shadow: 0 4px 12px rgba(91,141,239,0.3); flex-shrink: 0;
+      cursor: pointer; white-space: nowrap; box-shadow: 0 4px 12px rgba(79,110,247,0.3); flex-shrink: 0;
     }
     .btn-modal-add:active { transform: scale(0.97); }
 
@@ -437,6 +509,7 @@
       transition: all 0.3s ease; z-index: 400; pointer-events: none;
     }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .toast.coral { background: rgba(255,127,107,0.96); }
 
     /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
        ログイン画面
@@ -461,14 +534,14 @@
     }
     .login-logo-badge {
       width: 56px; height: 56px; border-radius: 16px;
-      background: linear-gradient(135deg, #5B8DEF, #FF8FAB);
+      background: linear-gradient(135deg, #4F6EF7, #FF8FAB);
       display: flex; align-items: center; justify-content: center;
       color: white; font-size: 24px;
-      box-shadow: 0 4px 16px rgba(91,141,239,0.4);
+      box-shadow: 0 4px 16px rgba(79,110,247,0.4);
     }
     .login-app-name {
       font-size: 20px; font-weight: 700;
-      background: linear-gradient(90deg, #5B8DEF 20%, #FF8FAB 100%);
+      background: linear-gradient(90deg, #4F6EF7 20%, #FF8FAB 100%);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
     }
     .login-subtitle { font-size: 12px; color: var(--sub); }
@@ -493,7 +566,7 @@
     .btn-login {
       width: 100%; padding: 15px; background: var(--primary); color: white; border: none;
       border-radius: 14px; font-family: 'Noto Sans JP', sans-serif; font-size: 15px; font-weight: 700;
-      cursor: pointer; box-shadow: 0 4px 14px rgba(91,141,239,0.4);
+      cursor: pointer; box-shadow: 0 4px 14px rgba(79,110,247,0.4);
       transition: opacity 0.2s, transform 0.1s; margin-top: 4px;
     }
     .btn-login:disabled { opacity: 0.6; cursor: not-allowed; }
@@ -611,7 +684,7 @@
   <div class="login-screen" id="loginScreen">
     <div class="login-card">
       <div class="login-logo-wrap">
-        <div class="login-logo-badge"><i class="fa-solid fa-heart"></i></div>
+        <div class="login-logo-badge"><i class="fa-regular fa-heart"></i></div>
         <div class="login-app-name">ふたりの家計簿</div>
         <div class="login-subtitle">共有コードとパスワードでログイン</div>
       </div>
@@ -695,7 +768,7 @@
 
   <header class="header">
     <div class="logo">
-      <div class="logo-badge"><i class="fa-solid fa-heart"></i></div>
+      <div class="logo-badge"><i class="fa-regular fa-heart"></i></div>
       <div class="logo-text">
         <span class="logo-name">ふたりの家計簿</span>
         <span class="logo-sub">一緒に管理しよう</span>
@@ -765,6 +838,41 @@
           </div>
         </div>
         <div class="settle-message empty" id="settleMsg">支出を入力すると精算額が表示されます</div>
+        <div class="settle-chars-row">
+          <div class="sc-char" id="scCharA">
+            <svg viewBox="0 0 36 52" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="18" cy="13" r="11" fill="#4F6EF7"/>
+              <circle cx="14" cy="12" r="2" fill="white"/>
+              <circle cx="22" cy="12" r="2" fill="white"/>
+              <path class="mouth-n" d="M13 17 Q18 21 23 17" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+              <path class="mouth-g" d="M12 16 Q18 23 24 16" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
+              <rect x="12" y="24" width="12" height="15" rx="4" fill="#4F6EF7"/>
+              <rect class="arm-l" x="3" y="25" width="9" height="4" rx="2" fill="#4F6EF7"/>
+              <rect class="arm-r" x="24" y="25" width="9" height="4" rx="2" fill="#4F6EF7"/>
+              <rect x="12" y="38" width="5" height="11" rx="2.5" fill="#4F6EF7"/>
+              <rect x="19" y="38" width="5" height="11" rx="2.5" fill="#4F6EF7"/>
+            </svg>
+            <span class="sc-char-name" id="scNameA">名前1</span>
+          </div>
+          <div class="sc-char" id="scCharB">
+            <svg viewBox="0 0 36 56" xmlns="http://www.w3.org/2000/svg">
+              <path d="M18 5 L11 1 Q9 4 12 6 Z" fill="#E87BAA"/>
+              <path d="M18 5 L25 1 Q27 4 24 6 Z" fill="#E87BAA"/>
+              <circle cx="18" cy="5" r="2.5" fill="#FF8FAB"/>
+              <circle cx="18" cy="15" r="11" fill="#FF8FAB"/>
+              <circle cx="14" cy="14" r="2" fill="white"/>
+              <circle cx="22" cy="14" r="2" fill="white"/>
+              <path class="mouth-n" d="M13 19 Q18 23 23 19" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+              <path class="mouth-g" d="M12 18 Q18 25 24 18" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
+              <rect x="12" y="26" width="12" height="15" rx="4" fill="#FF8FAB"/>
+              <rect class="arm-l" x="3" y="27" width="9" height="4" rx="2" fill="#FF8FAB"/>
+              <rect class="arm-r" x="24" y="27" width="9" height="4" rx="2" fill="#FF8FAB"/>
+              <rect x="12" y="40" width="5" height="12" rx="2.5" fill="#FF8FAB"/>
+              <rect x="19" y="40" width="5" height="12" rx="2.5" fill="#FF8FAB"/>
+            </svg>
+            <span class="sc-char-name" id="scNameB">名前2</span>
+          </div>
+        </div>
         <button class="btn-settle" id="settleBtn" onclick="doSettle()" disabled>精算完了にする</button>
       </div>
 
@@ -873,7 +981,7 @@
         <div id="archiveMonthList"></div>
         <div id="manualArchiveWrap" style="display:none;text-align:center;padding-top:8px">
           <button class="btn-manual-archive" onclick="manualArchive()">
-            <i class="fa-solid fa-box-archive"></i> 今月をアーカイブ（テスト用）
+            <i class="fa-regular fa-box-archive"></i> 今月をアーカイブ（テスト用）
           </button>
         </div>
       </div>
@@ -915,8 +1023,8 @@
 
   <nav class="tab-bar">
     <button class="tab-item active" id="tab-home"    onclick="showTab('home')">   <i class="fa-solid fa-house"></i><span>ホーム</span></button>
-    <button class="tab-item"        id="tab-add"     onclick="showTab('add')">    <i class="fa-solid fa-circle-plus"></i><span>追加</span></button>
-    <button class="tab-item"        id="tab-list"    onclick="showTab('list')">   <i class="fa-solid fa-list-ul"></i><span>一覧</span></button>
+    <button class="tab-item"        id="tab-add"     onclick="showTab('add')">    <i class="fa-solid fa-plus"></i><span>追加</span></button>
+    <button class="tab-item"        id="tab-list"    onclick="showTab('list')">   <i class="fa-solid fa-list"></i><span>一覧</span></button>
     <button class="tab-item"        id="tab-archive" onclick="showTab('archive')"><i class="fa-solid fa-box-archive"></i><span>アーカイブ</span>
       <span class="tab-badge" id="archiveBadge" style="display:none"></span>
     </button>
@@ -1363,7 +1471,7 @@
     function esc(s)     { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
     function genId()    { return Date.now().toString(36)+Math.random().toString(36).slice(2,7); }
     function real(arr)  { return (arr||expenses).filter(e=>!e.isSettlement); }
-    function unsettledReal(arr) { return real(arr).filter(e=>!e.settled && !e.isRecurring); }
+    function unsettledReal(arr) { return real(arr).filter(e=>!e.settled); }
     function getMonth() { const n=new Date(); return `${n.getFullYear()}-${String(n.getMonth()+1).padStart(2,'0')}`; }
 
     /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -1390,7 +1498,9 @@
       [['settleLabelBf', `${bf}が支払った`], ['settleLabelGf', `${gf}が支払った`],
        ['payerBtnBf', bf], ['payerBtnGf', gf],
        ['archivePcBf', bf], ['archivePcGf', gf],
-       ['calBfLabel', `${bf}の支出`], ['calGfLabel', `${gf}の支出`]
+       ['calBfLabel', `${bf}の支出`], ['calGfLabel', `${gf}の支出`],
+       ['scNameA', bf],  ['scNameB', gf],
+       ['celNameA', bf], ['celNameB', gf],
       ].forEach(([id, text]) => { const el=document.getElementById(id); if (el) el.textContent=text; });
       renderFilterPayerOptions();
       renderRecurringList();
@@ -1444,7 +1554,7 @@
       const year  = now.getFullYear();
       const month = now.getMonth();
       const monthStr = `${year}-${String(month+1).padStart(2,'0')}`;
-      const existingIds = new Set(expenses.filter(e=>e.isRecurring && !e.settled).map(e=>e.id));
+      const existingIds = new Set(expenses.filter(e=>e.isRecurring).map(e=>e.id));
       const batch = db.batch();
       const newRecs = [];
       recurringExpenses.forEach(re => {
@@ -1515,8 +1625,9 @@
     }
 
     /* ── Toast ── */
-    function showToast(msg) {
+    function showToast(msg, cls='') {
       const el=document.getElementById('toast');
+      el.className = 'toast' + (cls ? ' '+cls : '');
       el.textContent=msg; el.classList.add('show');
       setTimeout(()=>el.classList.remove('show'), 2400);
     }
@@ -1526,9 +1637,13 @@
        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
     function showTab(name) {
       document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
-      document.querySelectorAll('.tab-item').forEach(t=>t.classList.remove('active'));
+      document.querySelectorAll('.tab-item').forEach(t=>t.classList.remove('active','tab-bounce'));
       document.getElementById('view-'+name).classList.add('active');
-      document.getElementById('tab-'+name).classList.add('active');
+      const activeTab = document.getElementById('tab-'+name);
+      activeTab.classList.add('active');
+      void activeTab.offsetWidth;
+      activeTab.classList.add('tab-bounce');
+      setTimeout(() => activeTab.classList.remove('tab-bounce'), 350);
       if (name==='home')    renderHome();
       if (name==='list')    renderList();
       if (name==='archive') renderArchiveTab();
@@ -1559,8 +1674,8 @@
       const cx=(a.left+a.right)/2, cy=(a.top+a.bottom)/2;
       const tot=chart.data.datasets[0].data.reduce((s,v)=>s+v,0);
       ctx.save(); ctx.textAlign='center'; ctx.textBaseline='middle';
-      ctx.font=`bold 16px ${FONT}`; ctx.fillStyle='#1A1A2E'; ctx.fillText('¥'+tot.toLocaleString('ja-JP'),cx,cy-9);
-      ctx.font=`11px ${FONT}`; ctx.fillStyle='#6B7280'; ctx.fillText('合計',cx,cy+11);
+      ctx.font=`bold 16px ${FONT}`; ctx.fillStyle='#1A1D2E'; ctx.fillText('¥'+tot.toLocaleString('ja-JP'),cx,cy-9);
+      ctx.font=`11px ${FONT}`; ctx.fillStyle='#8B92A9'; ctx.fillText('合計',cx,cy+11);
       ctx.restore();
     }});
 
@@ -1570,9 +1685,9 @@
       destroyChart(key);
       CHARTS[key] = new Chart(document.getElementById(cid).getContext('2d'),{
         type:'doughnut',
-        data:{ labels:filtered.map(d=>d.cat), datasets:[{data:filtered.map(d=>d.amount), backgroundColor:filtered.map(d=>d.color), borderWidth:3, borderColor:'#F8F9FC', hoverOffset:6}] },
+        data:{ labels:filtered.map(d=>d.cat), datasets:[{data:filtered.map(d=>d.amount), backgroundColor:filtered.map(d=>d.color), borderWidth:3, borderColor:'#F7F8FC', hoverOffset:6}] },
         options:{ responsive:true, maintainAspectRatio:false, cutout:'58%',
-          plugins:{ legend:{position:'bottom',labels:{font:{family:FONT,size:12},padding:16,boxWidth:10,boxHeight:10,usePointStyle:true,pointStyle:'circle',color:'#1A1A2E'}},
+          plugins:{ legend:{position:'bottom',labels:{font:{family:FONT,size:12},padding:16,boxWidth:10,boxHeight:10,usePointStyle:true,pointStyle:'circle',color:'#1A1D2E'}},
             tooltip:{callbacks:{label:ctx=>{const p=total>0?Math.round(ctx.parsed/total*100):0;return ` ${ctx.label}: ¥${ctx.parsed.toLocaleString('ja-JP')} (${p}%)`;}}}
           }
         }
@@ -1587,8 +1702,8 @@
         options:{ indexAxis:'y', responsive:true, maintainAspectRatio:false,
           plugins:{ legend:{display:false}, tooltip:{callbacks:{label:ctx=>` ¥${ctx.parsed.x.toLocaleString('ja-JP')}`}} },
           scales:{
-            x:{ ticks:{callback:v=>v>=10000?`¥${(v/10000).toFixed(0)}万`:`¥${v.toLocaleString('ja-JP')}`,font:{family:FONT,size:10},color:'#6B7280',maxTicksLimit:5}, grid:{color:'#F3F4F6'} },
-            y:{ ticks:{font:{family:FONT,size:12},color:'#1A1A2E'}, grid:{display:false} }
+            x:{ ticks:{callback:v=>v>=10000?`¥${(v/10000).toFixed(0)}万`:`¥${v.toLocaleString('ja-JP')}`,font:{family:FONT,size:10},color:'#8B92A9',maxTicksLimit:5}, grid:{color:'#ECEEF5'} },
+            y:{ ticks:{font:{family:FONT,size:12},color:'#1A1D2E'}, grid:{display:false} }
           }
         }
       });
@@ -1640,13 +1755,20 @@
     function cardHTML(exp, mode) {
       const c = CAT[exp.category]||{color:'#999',icon:'fa-circle'};
       const payerName = exp.payer==='彼氏' ? NAMES.bf : exp.payer==='彼女' ? NAMES.gf : esc(exp.payer);
-      const inner = `<div class="expense-card${mode==='readonly'?' standalone-card':''}" id="card-${exp.id}">
-        <div class="card-bar" style="background:${exp.isRecurring?'#7C3AED':c.color}"></div>
+      const [, m, d] = exp.date.split('-');
+      const isBf = exp.payer === '彼氏';
+      const borderColor = isBf ? '#4F6EF7' : '#FF8FAB';
+      const badgeBg    = isBf ? '#EEF2FF' : '#FDF0F6';
+      const badgeColor = isBf ? '#3B5AC6' : '#C2547E';
+      const inner = `<div class="expense-card${mode==='readonly'?' standalone-card':''}" id="card-${exp.id}" style="border-left-color:${borderColor}">
+        <div class="card-date-badge" style="background:${badgeBg};color:${badgeColor}">
+          <span class="card-date-month">${+m}月</span>
+          <span class="card-date-day">${+d}</span>
+        </div>
         <div class="card-body">
           <div class="card-top">
-            <div class="card-icon" style="background:${c.color}">${c.emoji?`<span style="font-size:13px;line-height:1">${c.emoji}</span>`:`<i class="fa-solid ${c.icon}"></i>`}</div>
+            <div class="card-icon" style="background:${c.color}">${c.emoji?`<span style="font-size:13px;line-height:1">${c.emoji}</span>`:`<i class="fa-regular ${c.icon}"></i>`}</div>
             <span class="card-cat-name">${esc(exp.category)}</span>
-            <span class="card-date">${fmtDate(exp.date)}</span>
           </div>
           ${exp.memo?`<div class="card-memo">${esc(exp.memo)}</div>`:''}
           <div class="card-bottom">
@@ -1655,11 +1777,11 @@
             <span class="card-amount">${fmt(exp.amount)}</span>
           </div>
         </div>
-        ${mode==='swipe'?`<button class="card-del" onclick="deleteExpense('${exp.id}')" aria-label="削除"><i class="fa-solid fa-trash-can"></i></button>`:''}
+        ${mode==='swipe'?`<button class="card-del" onclick="deleteExpense('${exp.id}')" aria-label="削除"><i class="fa-regular fa-trash-can"></i></button>`:''}
       </div>`;
       if (mode==='swipe') {
         return `<div class="swipe-wrap" data-id="${exp.id}">
-          <div class="swipe-del-bg" onclick="deleteExpense('${exp.id}')"><i class="fa-solid fa-trash-can"></i><span>削除</span></div>
+          <div class="swipe-del-bg" onclick="deleteExpense('${exp.id}')"><i class="fa-regular fa-trash-can"></i><span>削除</span></div>
           <div class="swipe-slide">${inner}</div>
         </div>`;
       }
@@ -1670,24 +1792,13 @@
       const sd = exp.settleData;
       const hasDetail = sd && typeof sd.bf === 'number';
       const tapAttr = hasDetail ? `onclick="openSettleDetail('${exp.id}')"` : '';
-      const inner = `<div class="settle-record${hasDetail ? ' settle-record-tappable' : ''}" id="card-${exp.id}" ${tapAttr}>
-        <div class="settle-record-icon"><i class="fa-solid fa-scale-balanced"></i></div>
-        <div style="flex:1;min-width:0">
-          <div style="display:flex;align-items:center;justify-content:space-between;gap:6px">
-            <div class="settle-record-memo">${esc(exp.memo)}</div>
-            ${hasDetail ? '<i class="fa-solid fa-chevron-right" style="font-size:10px;color:#D1D5DB;flex-shrink:0"></i>' : ''}
-          </div>
-          <div class="settle-record-date" style="margin-top:3px">${fmtDate(exp.date)}${hasDetail && !sd.even && sd.owe ? ` · ${fmt(sd.owe)}` : ''}</div>
-        </div>
-        ${mode==='swipe' ? `<button class="card-del" onclick="event.stopPropagation();deleteExpense('${exp.id}')" style="opacity:1;color:#D1D5DB"><i class="fa-solid fa-trash-can"></i></button>` : ''}
+      const owe = hasDetail && !sd.even && sd.owe ? fmt(sd.owe) : null;
+      const label = owe ? `精算 ${owe}` : '精算完了';
+      return `<div class="settle-log${hasDetail ? ' settle-log-tappable' : ''}" id="card-${exp.id}" ${tapAttr}>
+        <span class="settle-log-check">✓</span>
+        <span class="settle-log-label">${label}</span>
+        <span class="settle-log-date">${fmtDate(exp.date)}</span>
       </div>`;
-      if (mode==='swipe') {
-        return `<div class="swipe-wrap" data-id="${exp.id}" style="margin-bottom:10px">
-          <div class="swipe-del-bg" onclick="deleteExpense('${exp.id}')"><i class="fa-solid fa-trash-can"></i><span>削除</span></div>
-          <div class="swipe-slide">${inner}</div>
-        </div>`;
-      }
-      return inner;
     }
 
     function openSettleDetail(expId) {
@@ -1787,7 +1898,7 @@
        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
     function renderHome() {
       const r=real(), total=r.reduce((s,e)=>s+e.amount,0);
-      animateVal(document.getElementById('homeTotal'), prevVals.total, total);
+      animateVal(document.getElementById('homeTotal'), prevVals.total, total, 1000);
       prevVals.total = total;
 
       const s=calcSettle(), msgEl=document.getElementById('settleMsg'), btn=document.getElementById('settleBtn');
@@ -1814,7 +1925,7 @@
       const el=document.getElementById('homeList'), rec=r.slice(0,5);
       el.innerHTML = rec.length
         ? rec.map(e=>cardHTML(e,'readonly')).join('')
-        : `<div class="empty"><i class="fa-solid fa-receipt"></i><p>まだ支出がありません。<br>「追加」タブから入力してみましょう！</p></div>`;
+        : `<div class="empty"><i class="fa-regular fa-receipt"></i><p>まだ支出がありません。<br>「追加」タブから入力してみましょう！</p></div>`;
     }
 
     /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -1887,7 +1998,7 @@
       const el=document.getElementById('listContainer');
       el.innerHTML = filtered.length
         ? filtered.map(e=>e.isSettlement?settleRecordHTML(e,'swipe'):cardHTML(e,'swipe')).join('')
-        : `<div class="empty"><i class="fa-solid fa-magnifying-glass"></i><p>${expenses.length===0?'まだ支出がありません。':'条件に一致する支出がありません。'}</p></div>`;
+        : `<div class="empty"><i class="fa-regular fa-magnifying-glass"></i><p>${expenses.length===0?'まだ支出がありません。':'条件に一致する支出がありません。'}</p></div>`;
       initSwipe(el);
     }
 
@@ -1910,6 +2021,7 @@
         btn.classList.add('success');
         btn.innerHTML = '<i class="fa-solid fa-check"></i> 追加しました！';
         setTimeout(() => { btn.classList.remove('success'); btn.innerHTML = '<i class="fa-solid fa-plus"></i> 支出を追加'; }, 900);
+        showToast('✨ 追加しました！', 'coral');
         await writeExpense({ id: genId(), date, category: selCategory, amount, payer: selPayer, memo });
       } else {
         // ── 固定費 ──
@@ -1954,16 +2066,104 @@
     /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
        精算
        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    /* ── Settle celebration ── */
+    let _celRAF = null;
+
+    function startSettleAnimation(s) {
+      const overlay  = document.getElementById('celOverlay');
+      const amountEl = document.getElementById('celAmount');
+      const msgEl    = document.getElementById('celMsg');
+      const charA    = document.getElementById('celCharA');
+      const charB    = document.getElementById('celCharB');
+
+      // reset
+      charA.classList.remove('celebrate');
+      charB.classList.remove('celebrate');
+      msgEl.classList.remove('cel-show');
+      amountEl.classList.remove('cel-zero');
+      overlay.style.opacity = '';
+      overlay.style.transition = '';
+      overlay.style.display = 'flex';
+
+      const startAmt = s.even ? 0 : s.owe;
+      const DURATION = 1800;
+
+      function celebrate() {
+        amountEl.textContent = '¥0';
+        amountEl.classList.add('cel-zero');
+        charA.classList.add('celebrate');
+        charB.classList.add('celebrate');
+        startConfetti();
+        setTimeout(() => msgEl.classList.add('cel-show'), 350);
+        setTimeout(() => stopSettleAnimation(), 3400);
+      }
+
+      if (startAmt === 0) { celebrate(); return; }
+
+      const t0 = performance.now();
+      (function tick(now) {
+        const p = Math.min((now - t0) / DURATION, 1);
+        const ease = 1 - Math.pow(1 - p, 3);
+        amountEl.textContent = '¥' + Math.round(startAmt * (1 - ease)).toLocaleString('ja-JP');
+        if (p < 1) { requestAnimationFrame(tick); } else { celebrate(); }
+      })(performance.now());
+    }
+
+    function stopSettleAnimation() {
+      const overlay = document.getElementById('celOverlay');
+      if (_celRAF) { cancelAnimationFrame(_celRAF); _celRAF = null; }
+      overlay.style.transition = 'opacity 0.4s ease';
+      overlay.style.opacity = '0';
+      setTimeout(() => {
+        overlay.style.display = 'none';
+        overlay.style.opacity = '';
+        overlay.style.transition = '';
+      }, 420);
+    }
+
+    function startConfetti() {
+      const canvas = document.getElementById('celCanvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width  = window.innerWidth;
+      canvas.height = window.innerHeight;
+      const COLORS = ['#FFD166','#FF6B6B','#FF8FAB','#4F6EF7','#5CC87C'];
+      const particles = Array.from({length: 90}, () => ({
+        x: Math.random() * canvas.width,
+        y: Math.random() * -180,
+        w: 7 + Math.random() * 8, h: 4 + Math.random() * 4,
+        color: COLORS[Math.floor(Math.random() * COLORS.length)],
+        vy: 2.5 + Math.random() * 3,
+        vx: (Math.random() - 0.5) * 2,
+        rot: Math.random() * Math.PI * 2,
+        vrot: (Math.random() - 0.5) * 0.18,
+      }));
+      const deadline = performance.now() + 3600;
+      function draw(now) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => {
+          p.x += p.vx; p.y += p.vy; p.rot += p.vrot;
+          if (p.y > canvas.height + 20) { p.y = -20; p.x = Math.random() * canvas.width; }
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.rot);
+          ctx.fillStyle = p.color;
+          ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+          ctx.restore();
+        });
+        if (now < deadline) { _celRAF = requestAnimationFrame(draw); }
+      }
+      _celRAF = requestAnimationFrame(draw);
+    }
+
     async function doSettle() {
       const btn = document.getElementById('settleBtn');
-      if (btn.disabled) return;          // 処理中 or 精算不要なら即リターン
+      if (btn.disabled) return;
 
       const s = calcSettle();
       if (s.total === 0) return;
 
-      btn.disabled = true;               // 押した瞬間に無効化（二重実行防止）
-      btn.classList.add('flash');
-      setTimeout(() => btn.classList.remove('flash'), 900);
+      btn.disabled = true;
+      startSettleAnimation(s);
 
       const fromName = s.from==='彼氏' ? NAMES.bf : NAMES.gf;
       const toName   = s.to  ==='彼氏' ? NAMES.bf : NAMES.gf;
@@ -1972,7 +2172,6 @@
         : `精算完了：${fromName}が${toName}に${fmt(s.owe)}を受け渡し`;
 
       try {
-        // 未精算の通常支出に settled: true を設定（固定費レコードは除外）
         const toSettle = unsettledReal();
         if (toSettle.length > 0) {
           const settleBatch = db.batch();
@@ -1982,7 +2181,6 @@
           await settleBatch.commit();
         }
 
-        // 固定費の精算済み日を更新
         settledThroughDay = new Date().getDate();
         await db.doc(sRef()).set({ settledThroughDay }, { merge: true });
 
@@ -2004,12 +2202,11 @@
 
         showToast('✅ ' + memo);
       } catch (e) {
-        // エラー時はボタンを復活させてリトライ可能にする
         btn.disabled = false;
+        stopSettleAnimation();
         showToast('エラーが発生しました。もう一度お試しください。');
         console.error('doSettle error:', e);
       }
-      // 成功時はスナップショットの renderHome() がボタン状態を管理
     }
 
     /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -2039,7 +2236,7 @@
         document.getElementById('manualArchiveWrap').style.display = real().length ? '' : 'none';
 
         if (!docs.length) {
-          el.innerHTML = `<div class="empty"><i class="fa-solid fa-box-archive"></i><p>アーカイブはまだありません。<br>月が変わると自動的に保存されます。</p></div>`;
+          el.innerHTML = `<div class="empty"><i class="fa-regular fa-box-archive"></i><p>アーカイブはまだありません。<br>月が変わると自動的に保存されます。</p></div>`;
           return;
         }
 
@@ -2102,7 +2299,7 @@
         const listEl = document.getElementById('archiveExpenseList');
         listEl.innerHTML = data.length
           ? data.map(e => e.isSettlement ? settleRecordHTML(e,'readonly') : cardHTML(e,'readonly')).join('')
-          : `<div class="empty"><i class="fa-solid fa-receipt"></i><p>支出データがありません</p></div>`;
+          : `<div class="empty"><i class="fa-regular fa-receipt"></i><p>支出データがありません</p></div>`;
       } catch (e) {
         document.getElementById('archiveExpenseList').innerHTML =
           `<div class="empty"><i class="fa-solid fa-triangle-exclamation"></i><p>読み込みエラーが発生しました</p></div>`;
@@ -2219,5 +2416,49 @@
       setupListeners();
     }
   </script>
+
+  <!-- ── Celebration overlay ── -->
+  <div id="celOverlay" class="cel-overlay" style="display:none">
+    <canvas id="celCanvas" class="cel-canvas"></canvas>
+    <div class="cel-body">
+      <div class="cel-chars">
+        <div class="cel-char" id="celCharA">
+          <svg viewBox="0 0 36 52" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="18" cy="13" r="11" fill="#4F6EF7"/>
+            <circle cx="14" cy="12" r="2" fill="white"/>
+            <circle cx="22" cy="12" r="2" fill="white"/>
+            <path class="mouth-n" d="M13 17 Q18 21 23 17" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+            <path class="mouth-g" d="M12 16 Q18 23 24 16" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <rect x="12" y="24" width="12" height="15" rx="4" fill="#4F6EF7"/>
+            <rect class="arm-l" x="3" y="25" width="9" height="4" rx="2" fill="#4F6EF7"/>
+            <rect class="arm-r" x="24" y="25" width="9" height="4" rx="2" fill="#4F6EF7"/>
+            <rect x="12" y="38" width="5" height="11" rx="2.5" fill="#4F6EF7"/>
+            <rect x="19" y="38" width="5" height="11" rx="2.5" fill="#4F6EF7"/>
+          </svg>
+          <span class="cel-char-name" id="celNameA">名前1</span>
+        </div>
+        <div class="cel-char" id="celCharB">
+          <svg viewBox="0 0 36 56" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18 5 L11 1 Q9 4 12 6 Z" fill="#E87BAA"/>
+            <path d="M18 5 L25 1 Q27 4 24 6 Z" fill="#E87BAA"/>
+            <circle cx="18" cy="5" r="2.5" fill="#FF8FAB"/>
+            <circle cx="18" cy="15" r="11" fill="#FF8FAB"/>
+            <circle cx="14" cy="14" r="2" fill="white"/>
+            <circle cx="22" cy="14" r="2" fill="white"/>
+            <path class="mouth-n" d="M13 19 Q18 23 23 19" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+            <path class="mouth-g" d="M12 18 Q18 25 24 18" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <rect x="12" y="26" width="12" height="15" rx="4" fill="#FF8FAB"/>
+            <rect class="arm-l" x="3" y="27" width="9" height="4" rx="2" fill="#FF8FAB"/>
+            <rect class="arm-r" x="24" y="27" width="9" height="4" rx="2" fill="#FF8FAB"/>
+            <rect x="12" y="40" width="5" height="12" rx="2.5" fill="#FF8FAB"/>
+            <rect x="19" y="40" width="5" height="12" rx="2.5" fill="#FF8FAB"/>
+          </svg>
+          <span class="cel-char-name" id="celNameB">名前2</span>
+        </div>
+      </div>
+      <div class="cel-amount" id="celAmount">¥0</div>
+      <div class="cel-msg" id="celMsg">精算完了！<br>今月もふたりでがんばったね 🎉</div>
+    </div>
+  </div>
 </body>
 </html>
